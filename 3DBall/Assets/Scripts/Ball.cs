@@ -14,7 +14,7 @@ public class Ball : MonoBehaviour {
     }	
 
     void Init() {
-        transform.position = Vector3.up * 8;
+        transform.localPosition = Vector3.up * 8;
         m_rigid.velocity = Vector3.zero;
         Vector3 v = new Vector3(Random.Range(m_fRandMin, m_fRandMax), Random.Range(m_fRandMin, m_fRandMax), Random.Range(m_fRandMin, m_fRandMax));
         m_rigid.AddForce(v, ForceMode.Impulse);
@@ -22,11 +22,11 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if( transform.position.y < -1) {
+        if( transform.localPosition.y < -1) {
             Init();
             if(m_fReward <= 0)
             {
-                m_fReward = -0.01f;
+                m_fReward = -8f;
             }
         }
     }
@@ -34,6 +34,6 @@ public class Ball : MonoBehaviour {
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Paddle"))
-            m_fReward = 1;
+            m_fReward = 3;
     }
 }

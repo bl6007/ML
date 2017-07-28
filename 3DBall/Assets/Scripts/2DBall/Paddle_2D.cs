@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Paddle_2D : MonoBehaviour
+public class Paddle_2D : Paddle
 {
-    Vector3 m_vPos;
-    float m_fSpeed = 10;
-    float m_fMinPos = -4;
-    float m_fMaxPos = 4;
     public enum MoveDir { /*Forward, Back,*/ Left, Right, Count }
-    bool[] m_bInput;    
-
-    void Start() {
+    
+    void Awake() {
         m_bInput = new bool[(int)MoveDir.Count];
         for (int i = 0; i < m_bInput.Length; i++)
             m_bInput[i] = false;
@@ -41,19 +36,20 @@ public class Paddle_2D : MonoBehaviour
 
         for (int i = 0; i < m_bInput.Length; i++)
             m_bInput[i] = false;
-        m_vPos = transform.position;
+        m_vPos = transform.localPosition;
         m_vPos.x = Mathf.Clamp(m_vPos.x, m_fMinPos, m_fMaxPos);
         m_vPos.z = Mathf.Clamp(m_vPos.z, m_fMinPos, m_fMaxPos);
-        transform.position = m_vPos;
+        transform.localPosition = m_vPos;
     }
     
-    public int GetControllSize() {
+    public override int GetControllSize() {
         return (int)MoveDir.Count;
     }
 
-    public void Move(MoveDir Dir){
-        if (Dir >= MoveDir.Count || Dir < 0)
+    public override void Move(int nDir)
+    {
+        if (nDir >= (int)MoveDir.Count || nDir < 0)
             return;
-        m_bInput[(int)Dir] = true;
+        m_bInput[nDir] = true;
     }
 }
