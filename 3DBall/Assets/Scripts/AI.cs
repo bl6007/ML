@@ -22,7 +22,9 @@ public class AI : MonoBehaviour {
     public float m_fTraningRandomValue = 0.4f;
     public int m_nInputSize = 5;
     protected float[] m_faStateBuffer;
-    public List<float> m_lSuccessAverage = new List<float>();
+    public List<float> m_lSuccessRateHistory = new List<float>();
+    public float m_fSuccessRateMax = 0;
+    public float m_fSuccessRateAverage = 0;
 
     void Awake()
     {
@@ -89,8 +91,13 @@ public class AI : MonoBehaviour {
                 //if (m_bTraning == true)
                 //{
                 float f = (float)counter / (float)counter_all * 100.0f;
-                m_lSuccessAverage.Add(f);
-                Debug.Log(gameObject.name + GetAverage());
+                m_lSuccessRateHistory.Add(f);
+                if (m_lSuccessRateHistory.Count > 10)
+                    m_lSuccessRateHistory.RemoveAt(0);
+                if (m_fSuccessRateMax < f)
+                    m_fSuccessRateMax = f;
+                m_fSuccessRateAverage = GetAverage();
+                Debug.Log(gameObject.name + m_fSuccessRateAverage);
                 //}
                 //std::cout << (float)counter / (float)counter_all * 100.0f << " % " << (timeGetTime() - time) / 1000.0f << " sec" << std::endl;
 
@@ -130,10 +137,10 @@ public class AI : MonoBehaviour {
     float GetAverage()
     {
         float f = 0;
-        int nSize = m_lSuccessAverage.Count;
+        int nSize = m_lSuccessRateHistory.Count;
         for (int i = 0; i < nSize; i++)
-            f += m_lSuccessAverage[i];
-        return f / (float)m_lSuccessAverage.Count;
+            f += m_lSuccessRateHistory[i];
+        return f / (float)m_lSuccessRateHistory.Count;
     }
 
     protected virtual float[] UpdateStateBuffer()
