@@ -40,6 +40,11 @@ public class AI : MonoBehaviour {
         int nInputSIze = m_nInputSize * m_nHistoryCount;
         int nOutputSIze = m_nStateCount + 1; // +1 is do nothing
         m_nn.Init(nInputSIze, nOutputSIze, m_nHiddenLayerCount, m_fBias, m_fEta, m_fAlpha);
+        for (int i = 0; i < m_nn.m_nLayerSize ; i++)
+        {
+            m_nn.SetLayerType(i, LayerBase.ActType.ReLU);
+        }
+        
         StartCoroutine(PlayAI());
     }
 
@@ -56,7 +61,7 @@ public class AI : MonoBehaviour {
         int nInputSize = m_nn.m_nInputSize;
         double[] daInput = new double[nInputSize];
         double[] daNext_input = new double[nInputSize];
-        double[] daReward = new double[nInputSize];
+        double[] daReward = new double[m_nn.m_nOutputSize];
 
         float[] HistoryData;
         WaitForEndOfFrame endofFrame = new WaitForEndOfFrame();
@@ -131,6 +136,7 @@ public class AI : MonoBehaviour {
             m_nn.SetInput(daInput);
             m_nn.FeedForward();
             m_nn.PropBackward(daReward);
+            m_nn.check();
         }
     }
 

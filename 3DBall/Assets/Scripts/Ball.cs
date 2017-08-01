@@ -24,16 +24,13 @@ public class Ball : MonoBehaviour {
 	void Update () {
         if( transform.localPosition.y < -1) {
             Init();
-            if(m_fReward <= 0)
-            {
-                m_fReward = -8f;
-            }
+            m_fReward = -20f;
         }
     }
 
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Paddle"))
-            m_fReward = 3;
+            m_fReward = 15;
     }
 }

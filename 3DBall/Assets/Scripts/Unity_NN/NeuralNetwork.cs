@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace NeuralNetworkDLL
 {
@@ -63,8 +63,8 @@ namespace NeuralNetworkDLL
 
  	    public void assignAllErrorToGrad(double[] target)
         {
-            Debug.Assert(m_daAct.Length > target.Length, "NeuralNetworkDLL::LayerBase::assignErrorToGrad"); // target may include bias or not
-            Debug.Assert(m_daGrad.Length > target.Length, "NeuralNetworkDLL::LayerBase::assignErrorToGrad");
+            Debug.Assert(m_daAct.Length >= target.Length, "NeuralNetworkDLL::LayerBase::assignErrorToGrad"); // target may include bias or not
+            Debug.Assert(m_daGrad.Length >= target.Length, "NeuralNetworkDLL::LayerBase::assignErrorToGrad");
             Debug.Assert(m_daAct.Length == m_daGrad.Length, "NeuralNetworkDLL::LayerBase::assignErrorToGrad");
             for (int d = 0; d < m_daAct.Length - 1; d++) {
                 m_daGrad[d] = (target[d] - m_daAct[d]);
@@ -129,16 +129,17 @@ namespace NeuralNetworkDLL
      	public void check()
      	{
             int nSize = m_daAct.Length;
-
             for (int i = 0; i < nSize; i++)
             {
                 if (Double.IsNaN(m_daAct[i]))
                 {
                     Debug.Assert(false, "NeuralNetworkDLL::LayerBase::check act isNan");
+                    break;
                 }
                 else if (Double.IsInfinity(m_daAct[i]))
                 {
                     Debug.Assert(false, "NeuralNetworkDLL::LayerBase::check act isInf");
+                    break;
                 }
             }          
 
@@ -149,10 +150,12 @@ namespace NeuralNetworkDLL
                 if (Double.IsNaN(m_daGrad[i]))
                 {
                     Debug.Assert(false, "NeuralNetworkDLL::LayerBase::check grad isNan");
+                    break;
                 }
                 else if (Double.IsInfinity(m_daGrad[i]))
                 {
                     Debug.Assert(false, "NeuralNetworkDLL::LayerBase::check grad isInf");
+                    break;
                 }
             }
         }
@@ -215,7 +218,7 @@ namespace NeuralNetworkDLL
             Array.Clear(m_aConnections, 0, m_aConnections.Length);
             for (int i = 0; i < m_aConnections.Length; i++)
             {
-                SetFullConnection(i, 0.01f, 0.01f);
+                SetFullConnection(i, true);
             }
         }
 
@@ -233,16 +236,19 @@ namespace NeuralNetworkDLL
             m_aLayers[nLayerIndex].SetActType(type);
         }
 
-        public void SetFullConnection(int nConnection_index, double rand_scale, double rand_min)
+        public void SetFullConnection(int nConnection_index, bool bUseXavierInit = true, double rand_scale = 0.01f, double rand_min = 0.01f)
         {
             Debug.Assert(nConnection_index >= 0, "NeuralNetworkDLL::NeuralNetwork::setFullConnection");
             Debug.Assert(nConnection_index < m_aConnections.Length, "NeuralNetworkDLL::NeuralNetwork::setFullConnection");
 
             int nNextCount = m_aLayers[nConnection_index + 1].m_daAct.Length - 1;
             int nPreCount = m_aLayers[nConnection_index].m_daAct.Length;
-            m_aConnections[nConnection_index] = new FullConnection(nNextCount, nPreCount, rand_scale, rand_min);
+//             if (bUseXavierInit)
+//                 m_aConnections[nConnection_index] = new FullConnection(nNextCount, nPreCount, m_nInputSize, m_nOutputSize);
+//             else
+                m_aConnections[nConnection_index] = new FullConnection(nNextCount, nPreCount, rand_scale, rand_min);
         }
-
+        
         //         private void Assert(bool p)
         //         {
         //             throw new NotImplementedException();
@@ -286,7 +292,8 @@ namespace NeuralNetworkDLL
         {
             if (epsilon > 0.0)
             {
-                Random r = new Random();
+
+                System.Random r = new System.Random();
                 if (r.NextDouble() < epsilon)
                     return r.Next(m_nOutputSize);
             }
@@ -329,7 +336,7 @@ namespace NeuralNetworkDLL
                 possibility[d] = accum;
             }
 
-            Random rand = new Random();
+            System.Random rand = new System.Random();
             double r = rand.NextDouble();
 
             for (int d = 0; d < m_nOutputSize; d++)

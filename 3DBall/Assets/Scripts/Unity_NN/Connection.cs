@@ -5,6 +5,7 @@ using System.Text;
 //using System.Threading.Tasks;
 using MathDLL;
 
+
 namespace NeuralNetworkDLL
 {
     abstract class ConnectionBase
@@ -25,6 +26,13 @@ namespace NeuralNetworkDLL
             weights_ = new Matrix(num_next, num_prev);
             delta_weights_ = new Matrix(num_next, num_prev);
             weights_.assignAllRandom(rand_scale, rand_min);
+        }
+
+        public FullConnection(int num_next, int num_prev, int nInputSize, int nOutputSize)
+        {
+            weights_ = new Matrix(num_next, num_prev);
+            delta_weights_ = new Matrix(num_next, num_prev);
+            weights_.assignAllXavier(num_prev, num_next);
         }
 
         public override void forward(double[] pre_layer_acts_, ref double[] next_layer_acts)

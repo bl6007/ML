@@ -20,7 +20,7 @@ public class Game : MonoBehaviour {
         m_bTraning = bTraining;
         if (m_bTraning)
         {
-            Time.timeScale = 6;
+            Time.timeScale = 5;
             for (int i = 0; i < m_AllRenderer.Length; i++)
                 m_AllRenderer[i].enabled = false;
             for (int i = 0; i < m_Light.Length; i++)
@@ -29,7 +29,7 @@ public class Game : MonoBehaviour {
         }
         else
         {
-            Time.timeScale = 6;
+            Time.timeScale = 5;
             for (int i = 0; i < m_AllRenderer.Length; i++)
                 m_AllRenderer[i].enabled = true;
             for (int i = 0; i < m_Light.Length; i++)

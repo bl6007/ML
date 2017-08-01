@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.IO;
+using UnityEngine;
 
 namespace MathDLL
 {
@@ -55,11 +55,30 @@ namespace MathDLL
         }
 
         public void assignAllRandom(double scale, double min) {
-            Random r = new Random();
+            System.Random r = new System.Random();
 		    int num_all = num_rows_ * num_cols_;
 		    for (int i = 0; i < num_all; i++)
-                values_[i] = r.NextDouble() * scale + min;
+                values_[i] = r.NextDouble() * scale + min;            
 	    }
+
+        public void assignAllXavier(int nInputSize, int nOutputSize)
+        {
+            System.Random r = new System.Random();
+            int num_all = num_rows_ * num_cols_;
+
+            double d = Math.Sqrt(nInputSize);
+            if (nInputSize > nOutputSize)
+            {
+                for (int i = 0; i < num_all; i++)
+                    values_[i] = r.Next(nOutputSize, nInputSize) / d;
+            }
+            else
+            {
+                for (int i = 0; i < num_all; i++)
+                    values_[i] = r.Next(nInputSize, nOutputSize) / d;
+            }
+            
+        }
 
         public void assignAll(double v) {
 		    int num_all = num_rows_ * num_cols_;
@@ -228,10 +247,12 @@ namespace MathDLL
                 if (Double.IsNaN(values_[i]))
                 {
                     Debug.Assert(false);
+                    break;
                 }
                 else if (Double.IsInfinity(values_[i]))
                 {
                     Debug.Assert(false);
+                    break;
                 }
             }
 
