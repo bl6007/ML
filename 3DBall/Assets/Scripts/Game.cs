@@ -20,7 +20,10 @@ public class Game : MonoBehaviour {
         m_bTraning = bTraining;
         if (m_bTraning)
         {
-            Time.timeScale = 5;
+//             Time.timeScale = 10;
+//             Time.fixedDeltaTime = 0.002f;
+            Time.timeScale = 6;
+            //Time.fixedDeltaTime = 0.002f;
             for (int i = 0; i < m_AllRenderer.Length; i++)
                 m_AllRenderer[i].enabled = false;
             for (int i = 0; i < m_Light.Length; i++)
@@ -29,7 +32,8 @@ public class Game : MonoBehaviour {
         }
         else
         {
-            Time.timeScale = 5;
+            Time.timeScale = 6;
+//            Time.fixedDeltaTime = 0.004f;
             for (int i = 0; i < m_AllRenderer.Length; i++)
                 m_AllRenderer[i].enabled = true;
             for (int i = 0; i < m_Light.Length; i++)
@@ -48,5 +52,5 @@ public class Game : MonoBehaviour {
         m_AllRenderer = gameObject.GetComponentsInChildren<Renderer>(true);
         m_Light = gameObject.GetComponentsInChildren<Light>(true);
         m_Camera = Camera.main;
-    }
+    }   
 }

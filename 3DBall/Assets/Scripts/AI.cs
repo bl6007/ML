@@ -34,18 +34,29 @@ public class AI : MonoBehaviour {
         m_scriptPaddle = gameObject.GetComponentInChildren<Paddle>();
     }
 
+    bool m_bStart = false;
     void Start()
     {
         m_nStateCount = m_scriptPaddle.GetControllSize();
         int nInputSIze = m_nInputSize * m_nHistoryCount;
         int nOutputSIze = m_nStateCount + 1; // +1 is do nothing
         m_nn.Init(nInputSIze, nOutputSIze, m_nHiddenLayerCount, m_fBias, m_fEta, m_fAlpha);
-        for (int i = 0; i < m_nn.m_nLayerSize ; i++)
+        for (int i = 1; i < m_nn.m_nLayerSize - 1 ; i++) {            
+            m_nn.SetLayer(i, 100, LayerBase.ActType.LReLU);
+        }
+
+        for (int i = 0; i < m_nn.m_nLayerSize -1 ; i++)
         {
-            m_nn.SetLayerType(i, LayerBase.ActType.ReLU);
+            m_nn.SetFullConnection(i);
         }
         
         StartCoroutine(PlayAI());
+        m_bStart = true;
+    }
+
+    void OnEnable() {
+        if(m_bStart)
+            StartCoroutine(PlayAI());
     }
 
     int counter = 0;

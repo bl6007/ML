@@ -31,6 +31,6 @@ public class Ball : MonoBehaviour {
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Paddle"))
-            m_fReward = 15;
+            m_fReward = 20;
     }
 }

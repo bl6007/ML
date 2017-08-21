@@ -123,7 +123,7 @@ namespace MathDLL
             Debug.Assert(row >= 0, "MathDLL::Matrix::GetIndex");
             Debug.Assert(col >= 0, "MathDLL::Matrix::GetIndex");
             Debug.Assert(row < num_rows_, "MathDLL::Matrix::GetIndex");
-            Debug.Assert(row < num_cols_, "MathDLL::Matrix::GetIndex");
+            Debug.Assert(col < num_cols_, "MathDLL::Matrix::GetIndex");
             return row * num_cols_ + col;
         }
 

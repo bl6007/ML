@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bTraning: 0
   m_nHistoryCount: 3
-  m_nHiddenLayerCount: 4
+  m_nHiddenLayerCount: 7
   m_fBias: 0.01
   m_fEta: 0.00001
   m_fAlpha: 0.5
@@ -352,10 +352,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bTraning: 0
-  m_nHistoryCount: 3
-  m_nHiddenLayerCount: 3
+  m_nHistoryCount: 4
+  m_nHiddenLayerCount: 7
   m_fBias: 0.01
-  m_fEta: 0.0001
+  m_fEta: 0.000001
   m_fAlpha: 0.5
   m_fGamma: 0.95
   m_fTraningRandomValue: 0.4
